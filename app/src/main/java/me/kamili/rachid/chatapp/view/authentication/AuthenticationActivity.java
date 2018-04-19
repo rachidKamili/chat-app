@@ -18,41 +18,31 @@ import java.util.Arrays;
 import me.kamili.rachid.chatapp.R;
 import me.kamili.rachid.chatapp.view.users.UsersActivity;
 
-public class AuthenticationActivity extends AppCompatActivity {
+import static me.kamili.rachid.chatapp.view.authentication.AuthenticationPresenter.RC_SIGN_IN;
 
-    private static final int RC_SIGN_IN = 123;
+public class AuthenticationActivity extends AppCompatActivity implements AuthenticationContract.View {
 
+    private AuthenticationPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication);
 
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(Arrays.asList(
-                                new AuthUI.IdpConfig.EmailBuilder().build(),
-                                new AuthUI.IdpConfig.GoogleBuilder().build(),
-                                new AuthUI.IdpConfig.FacebookBuilder().build(),
-                                new AuthUI.IdpConfig.TwitterBuilder().build()))
-                        .build(),
-                RC_SIGN_IN);
-
+        presenter = new AuthenticationPresenter();
+        presenter.startActivityForResult(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        presenter.attachView(this);
 
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+        if (presenter.checkSession()) {
             // already signed in
-            Toast.makeText(this, "Already signed in", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent().setClass(this, UsersActivity.class);
+            Intent intent = new Intent().setClass(getApplicationContext(), UsersActivity.class);
             startActivity(intent);
-        } else {
-            // not signed in
-            Toast.makeText(this, "Not signed in", Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 
@@ -60,31 +50,26 @@ public class AuthenticationActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
-
             // Successfully signed in
             if (resultCode == RESULT_OK) {
-
-                Intent intent = new Intent().setClass(this, UsersActivity.class)
-                        .putExtra(ExtraConstants.IDP_RESPONSE, response);
+                Intent intent = new Intent().setClass(getApplicationContext(), UsersActivity.class);
                 startActivity(intent);
                 finish();
             } else {
                 // Sign in failed
-                if (response == null) {
-                    // User pressed back button
-                    Toast.makeText(this, "User pressed back button", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
-                    Toast.makeText(this, "No network", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 Toast.makeText(this, "Sign-in error", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
+    @Override
+    public void showError(String error) {
+        Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.detachView();
+    }
 }
