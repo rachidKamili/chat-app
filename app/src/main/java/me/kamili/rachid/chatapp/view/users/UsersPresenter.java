@@ -8,6 +8,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
 
@@ -29,6 +30,8 @@ public class UsersPresenter implements UsersContract.Presenter, DbManager.IOnRet
         dbManager = DbManager.getInstance(this);
         User user = dbManager.getUser();
         if (user != null) {
+            FirebaseMessaging firebaseMessaging = FirebaseMessaging.getInstance();
+            firebaseMessaging.subscribeToTopic("NEW_MESSAGE_"+user.getUid());
             this.view.onReceiveUser(user);
             dbManager.getAllUsers();
         }
