@@ -9,13 +9,14 @@ public interface AuthenticationContract {
     //interface to communicate from presenter to view
     interface View extends BaseView {
         //specific methods for each view
+        void onStartUsersActivity();
     }
 
     interface Presenter extends BasePresenter<View> {
         //specific method for each view's presenter
         void startActivityForResult(Activity activity);
         boolean checkSession();
-
+        void startUsersActivity();
     }
 
 }

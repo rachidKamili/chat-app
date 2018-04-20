@@ -40,9 +40,7 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
 
         if (presenter.checkSession()) {
             // already signed in
-            Intent intent = new Intent().setClass(getApplicationContext(), UsersActivity.class);
-            startActivity(intent);
-            finish();
+            presenter.startUsersActivity();
         }
     }
 
@@ -52,9 +50,7 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
         if (requestCode == RC_SIGN_IN) {
             // Successfully signed in
             if (resultCode == RESULT_OK) {
-                Intent intent = new Intent().setClass(getApplicationContext(), UsersActivity.class);
-                startActivity(intent);
-                finish();
+                presenter.startUsersActivity();
             } else {
                 // Sign in failed
                 Toast.makeText(this, "Sign-in error", Toast.LENGTH_SHORT).show();
@@ -71,5 +67,12 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
     protected void onStop() {
         super.onStop();
         presenter.detachView();
+    }
+
+    @Override
+    public void onStartUsersActivity() {
+        Intent intent = new Intent().setClass(getApplicationContext(), UsersActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

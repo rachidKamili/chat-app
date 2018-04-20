@@ -2,24 +2,43 @@ package me.kamili.rachid.chatapp.view.users;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.List;
+
+import me.kamili.rachid.chatapp.model.Conversation;
+import me.kamili.rachid.chatapp.model.User;
+import me.kamili.rachid.chatapp.utils.DbManager;
 
 
-public class UsersPresenter implements UsersContract.Presenter{
+public class UsersPresenter implements UsersContract.Presenter, DbManager.IOnRetreiveData {
 
     private UsersContract.View view;
+    private DbManager dbManager;
+
+    public UsersPresenter() {
+        dbManager = DbManager.getInstance(this);
+    }
 
     @Override
     public void attachView(UsersContract.View view) {
         this.view = view;
+
+        User user = dbManager.getUser();
+        if (user != null) {
+            this.view.onReceiveUser(user);
+            dbManager.getAllUsers();
+        }
     }
 
     @Override
     public void detachView() {
-        this.view = null;
+        //this.view = null;
     }
 
     @Override
@@ -31,5 +50,24 @@ public class UsersPresenter implements UsersContract.Presenter{
                         view.onLogout();
                     }
                 });
+    }
+
+    @Override
+    public void onRetreiveConversation(Conversation conversation) {
+        view.onShowConversation(conversation);
+    }
+
+    @Override
+    public void onRetreiveUserList(List<User> userList) {
+        if (view != null)
+            view.onReceiveUserList(userList);
+    }
+
+    @Override
+    public void goToConversationWith(User user) {
+        dbManager.receiveOrCreateConversation(
+                FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                user.getUid()
+        );
     }
 }

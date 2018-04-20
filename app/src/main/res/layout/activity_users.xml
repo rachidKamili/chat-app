@@ -1,17 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.users.UsersActivity">
-<TextView
-    android:text="TEST"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
-    <Button
-        android:onClick="onLogOut"
-        android:text="Log out"
+    android:orientation="vertical"
+    tools:context=".view.users.UsersActivity"
+    android:background="@android:color/holo_green_light">
+
+    <TextView
+        android:id="@+id/tvEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-</android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:layout_margin="20dp"
+        android:textSize="40dp"
+        android:text="Users :"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvUsers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:padding="20dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onLogOut"
+        android:text="Log out" />
+
+</LinearLayout>

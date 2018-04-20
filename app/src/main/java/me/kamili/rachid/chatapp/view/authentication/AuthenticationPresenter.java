@@ -41,4 +41,9 @@ public class AuthenticationPresenter implements AuthenticationContract.Presenter
     public boolean checkSession() {
         return FirebaseAuth.getInstance().getCurrentUser() != null;
     }
+
+    @Override
+    public void startUsersActivity() {
+        view.onStartUsersActivity();
+    }
 }
