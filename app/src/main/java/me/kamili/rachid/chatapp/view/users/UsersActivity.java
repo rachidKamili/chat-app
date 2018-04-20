@@ -19,6 +19,7 @@ import me.kamili.rachid.chatapp.model.Conversation;
 import me.kamili.rachid.chatapp.model.User;
 import me.kamili.rachid.chatapp.utils.UsersAdapter;
 import me.kamili.rachid.chatapp.view.authentication.AuthenticationActivity;
+import me.kamili.rachid.chatapp.view.conversation.ConversationActivity;
 
 public class UsersActivity extends AppCompatActivity implements UsersContract.View , UsersAdapter.OnUserClickListener{
 
@@ -98,12 +99,11 @@ public class UsersActivity extends AppCompatActivity implements UsersContract.Vi
     }
 
     @Override
-    public void onShowConversation(Conversation conversation) {
-
-        Toast.makeText(this, "Conversation!!!", Toast.LENGTH_SHORT).show();
-        // TODO: 4/19/2018 Start the conversation activty
-//        Intent intent = new Intent(getApplicationContext(), AuthenticationActivity.class);
-//        startActivity(intent);
+    public void onShowConversation(Conversation conversation,String otherId) {
+        Intent intent = new Intent(UsersActivity.this, ConversationActivity.class);
+        intent.putExtra("conversationId", conversation.getId());
+        intent.putExtra("otherUserId", otherId);
+        startActivity(intent);
     }
 
     @Override

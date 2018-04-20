@@ -21,14 +21,12 @@ public class UsersPresenter implements UsersContract.Presenter, DbManager.IOnRet
     private UsersContract.View view;
     private DbManager dbManager;
 
-    public UsersPresenter() {
-        dbManager = DbManager.getInstance(this);
-    }
+    public UsersPresenter() {}
 
     @Override
     public void attachView(UsersContract.View view) {
         this.view = view;
-
+        dbManager = DbManager.getInstance(this);
         User user = dbManager.getUser();
         if (user != null) {
             this.view.onReceiveUser(user);
@@ -53,8 +51,8 @@ public class UsersPresenter implements UsersContract.Presenter, DbManager.IOnRet
     }
 
     @Override
-    public void onRetreiveConversation(Conversation conversation) {
-        view.onShowConversation(conversation);
+    public void onRetreiveConversation(Conversation conversation, String otherId) {
+        view.onShowConversation(conversation,otherId);
     }
 
     @Override

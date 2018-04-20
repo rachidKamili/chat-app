@@ -16,7 +16,7 @@ public interface UsersContract {
         void onLogout();
         void onReceiveUser(User user);
         void onReceiveUserList(List<User> userList);
-        void onShowConversation(Conversation conversation);
+        void onShowConversation(Conversation conversation, String otherId);
     }
 
     interface Presenter extends BasePresenter<UsersContract.View> {
