@@ -2,11 +2,11 @@
     <string name="app_name">Chat App</string>
 
     <!--Facebook-->
-    <string name="facebook_application_id">101416970719282</string>
-    <string name="facebook_login_protocol_scheme">fb101416970719282</string>
+    <string name="facebook_application_id">APPID</string>
+    <string name="facebook_login_protocol_scheme">fbAPPID</string>
 
     <!--Twitter-->
-    <string name="twitter_consumer_key" translatable="false">uZg3pZx57M8h44MS0HWF0wWil</string>
-    <string name="twitter_consumer_secret" translatable="false">KQ90pTX5Fcj63leWwF0NRF5xbQ1z6Pi4VSmNoVAi7ePYpOPlzb</string>
+    <string name="twitter_consumer_key" translatable="false">KEY</string>
+    <string name="twitter_consumer_secret" translatable="false">SECRET</string>
 
 </resources>
